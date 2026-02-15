@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Physics MCQ Mock Exam (105Q, 105 min)</title>
+  <style>
+    :root { --bg:#0b1220; --card:#111b2e; --muted:#9fb3c8; --text:#e9f1ff; --accent:#6ee7ff; --danger:#ff6b6b; --ok:#48ff8a; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#070b14, #0b1220);color:var(--text);}
+    .wrap{max-width:1050px;margin:0 auto;padding:22px;}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap}
+    .brand{display:flex;flex-direction:column;gap:2px}
+    .brand h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.2px}
+    .brand .sub{font-size:12px;color:var(--muted);line-height:1.3}
+    .pillrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:8px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+    .pill strong{color:var(--text)}
+    .timer{font-variant-numeric:tabular-nums}
+    .timer.danger{border-color:rgba(255,107,107,.45); color:#ffd0d0}
+    .grid{display:grid;grid-template-columns: 1.25fr .75fr;gap:14px;}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{background:rgba(17,27,46,.92);border:1px solid rgba(255,255,255,.10);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25);overflow:hidden;}
+    .cardhead{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .cardhead h2{margin:0;font-size:14px;font-weight:700;color:var(--text)}
+    .cardbody{padding:16px}
+    .qnum{color:var(--accent);font-weight:800}
+    .qtext{margin:8px 0 12px 0;line-height:1.35}
+    .opts{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    .opt{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      cursor:pointer; user-select:none;
+      transition: transform .06s ease, border-color .12s ease, background .12s ease;
+    }
+    .opt:hover{transform: translateY(-1px); border-color:rgba(110,231,255,.40)}
+    .opt input{margin-top:2px; accent-color: var(--accent);}
+    .opt .label{line-height:1.25}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button{
+      cursor:pointer;border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);color:var(--text);
+      padding:10px 12px;border-radius:14px;font-weight:800;
+      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+    }
+    button:hover{transform: translateY(-1px); border-color:rgba(110,231,255,.40); background:rgba(110,231,255,.10)}
+    button.primary{background:rgba(110,231,255,.18); border-color:rgba(110,231,255,.35)}
+    button.danger{background:rgba(255,107,107,.16); border-color:rgba(255,107,107,.35)}
+    button:disabled{opacity:.45; cursor:not-allowed; transform:none}
+    .sidebar .cardbody{padding:12px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .tag{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);color:var(--muted);background:rgba(255,255,255,.04)}
+    .tag .dot{display:inline-block;width:9px;height:9px;border-radius:999px;margin-right:6px;vertical-align:middle}
+    .dot.ans{background:var(--accent)}
+    .dot.none{background:#6b7b90}
+    .dot.cur{background:#ffd166}
+    .qgrid{display:grid;grid-template-columns: repeat(12, 1fr); gap:8px}
+    @media (max-width: 700px){ .qgrid{grid-template-columns: repeat(10, 1fr);} }
+    @media (max-width: 520px){ .qgrid{grid-template-columns: repeat(8, 1fr);} }
+    .qbtn{
+      padding:8px 0;border-radius:12px;text-align:center;font-weight:900;font-size:12px;
+      border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04); color:var(--muted);
+    }
+    .qbtn.answered{border-color:rgba(110,231,255,.35); color:var(--text); background:rgba(110,231,255,.10)}
+    .qbtn.current{border-color:rgba(255,209,102,.45); color:var(--text); background:rgba(255,209,102,.10)}
+    .qbtn:hover{border-color:rgba(110,231,255,.40)}
+    .screen{display:none}
+    .screen.active{display:block}
+    .startbox{padding:18px}
+    .startbox h2{margin:0 0 8px 0}
+    .startbox p{margin:8px 0;color:var(--muted);line-height:1.45}
+    .hr{height:1px;background:rgba(255,255,255,.08);margin:14px 0}
+    .resultline{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+    .badge{padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);font-weight:900;font-size:12px}
+    .badge.ok{border-color:rgba(72,255,138,.35); background:rgba(72,255,138,.10)}
+    .badge.fail{border-color:rgba(255,107,107,.35); background:rgba(255,107,107,.10)}
+    .review{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+    details{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);border-radius:16px;padding:10px 12px}
+    summary{cursor:pointer;font-weight:900}
+    .revq{margin-top:10px;color:var(--muted);line-height:1.4}
+    .revq b{color:var(--text)}
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Physics MCQ Mock Exam</h1>
+        <div class="sub">105 questions • 105 minutes • click to answer • shuffle Q + shuffle options • only a/b/c shown</div>
+      </div>
+      <div class="pillrow">
+        <div class="pill timer" id="timerPill"><strong>Time</strong>: <span id="timer">105:00</span></div>
+        <div class="pill"><strong>Pass</strong>: 60% (<span id="passCount">63</span>/<span id="totalCount">105</span>)</div>
+        <div class="pill"><strong>Progress</strong>: <span id="progress">0</span>/<span id="progressTotal">105</span></div>
+      </div>
+    </div>
+
+    <!-- START SCREEN -->
+    <div class="card screen active" id="startScreen">
+      <div class="startbox">
+        <h2>Ready?</h2>
+        <p>
+          This mock test combines your 40 + 50 + 15 question sets.
+          Questions and options will be <b>shuffled</b>. If a question originally had 4 options, one wrong option is removed so you always get <b>a/b/c</b>.
+        </p>
+        <div class="hr"></div>
+        <p class="small">
+          Rules: 105 MCQ • 105 minutes • Jump to any question • Submit anytime • Auto-submit when time ends • Pass = 60%.
+        </p>
+        <div class="nav">
+          <button class="primary" id="startBtn">Start Exam</button>
+          <button id="shuffleBtn" title="Shuffle again before starting">Shuffle Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAM SCREEN -->
+    <div class="grid screen" id="examScreen">
+      <div class="card">
+        <div class="cardhead">
+          <h2>Question <span id="qIndex">1</span> of <span id="qTotal">105</span></h2>
+          <div class="small">Tip: click the option row</div>
+        </div>
+        <div class="cardbody">
+          <div class="qtext">
+            <span class="qnum" id="qNum">Q1.</span>
+            <span id="qText"></span>
+          </div>
+          <div class="opts" id="options"></div>
+
+          <div class="nav">
+            <button id="prevBtn">← Previous</button>
+            <button id="nextBtn" class="primary">Next →</button>
+            <button id="submitBtn" class="danger" style="margin-left:auto;">Submit Exam</button>
+          </div>
+          <div class="small" style="margin-top:10px;color:var(--muted)">
+            Your answers are saved automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="card sidebar">
+        <div class="cardhead">
+          <h2>Question Map</h2>
+          <div class="small">Jump fast</div>
+        </div>
+        <div class="cardbody">
+          <div class="legend">
+            <span class="tag"><span class="dot cur"></span>Current</span>
+            <span class="tag"><span class="dot ans"></span>Answered</span>
+            <span class="tag"><span class="dot none"></span>Not answered</span>
+          </div>
+          <div class="qgrid" id="qGrid"></div>
+          <div class="hr"></div>
+          <button id="clearBtn" title="Clear answer for current question">Clear current answer</button>
+          <div class="small" style="margin-top:10px">
+            Pass mark: <b>60%</b> = <b><span id="passCount2">63</span>/<span id="totalCount2">105</span></b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="card screen" id="resultScreen">
+      <div class="cardhead">
+        <h2>Result</h2>
+        <div class="small">Review included</div>
+      </div>
+      <div class="cardbody">
+        <div class="resultline" id="resultBadges"></div>
+        <div class="small" id="resultSummary"></div>
+        <div class="hr"></div>
+        <div class="nav">
+          <button id="retryBtn" class="primary">Retry (new shuffle)</button>
+          <button id="scrollReviewBtn">Go to Review ↓</button>
+        </div>
+
+        <div class="review" id="review"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===============================
+    // 105-question bank
+    // Each item: { q, options:[...], answerText, why }
+    // Note: some sets had 4 options; we later reduce to 3 (a/b/c) by removing one wrong choice.
+    // ===============================
+
+    // ---- 40 MCQ set (from your combined 8AM+10AM PDF) ----
+    const BANK_40 = [
+      { q:"Total internal reflection occurs when a light ray:", options:[
+        "Strikes a boundary between two media at an angle greater than the critical angle",
+        "Is partially transmitted and partially reflected at a boundary",
+        "Experiences diffraction through a narrow slit"
+      ], answerText:"Strikes a boundary between two media at an angle greater than the critical angle",
+        why:"From denser → rarer medium, if incidence angle > critical angle, all light reflects." },
+
+      { q:"The electric force between two charges is:", options:[
+        "Directly proportional to the product of the charges and their distance",
+        "Directly proportional to the product of the charges and inversely proportional to the square of the distance between the charges",
+        "Directly proportional to the square of the distance between the charges and inversely proportional to the product of the charges"
+      ], answerText:"Directly proportional to the product of the charges and inversely proportional to the square of the distance between the charges",
+        why:"Coulomb’s law: F = k (q1 q2) / r²." },
+
+      { q:"To produce an electron-positron pair, the incoming energy of the photon must be:", options:[
+        "At least 511 keV",
+        "At least 100 keV",
+        "At least 1022 keV"
+      ], answerText:"At least 1022 keV",
+        why:"Need 2×511 keV rest energy minimum." },
+
+      { q:"Newton's second law states that acceleration is:", options:[
+        "Directly proportional to velocity and inversely proportional to mass",
+        "Directly proportional to mass and inversely proportional to net force",
+        "Directly proportional to net force and inversely proportional to mass"
+      ], answerText:"Directly proportional to net force and inversely proportional to mass",
+        why:"F = m a → a = F/m." },
+
+      { q:"In vacuum, the speed of light (c) is approximately:", options:[
+        "500,000 kilometers per hour",
+        "1,000,000 meters per second",
+        "300,000 kilometers per second"
+      ], answerText:"300,000 kilometers per second",
+        why:"c ≈ 3×10^8 m/s = 300,000 km/s." },
+
+      { q:"According to special relativity, lengths observed by an arbitrary reference frame:", options:[
+        "Are the same as the ones measured in the rest frame of the meter",
+        "Are longer than in the rest frame of the meter",
+        "Are shorter than in the rest frame of the meter"
+      ], answerText:"Are shorter than in the rest frame of the meter",
+        why:"Length contraction." },
+
+      { q:"The work-energy theorem states that:", options:[
+        "Work done by a force is always converted into thermal energy",
+        "Work done by a force is always zero",
+        "Work done by a force on an object equals the variation of its kinetic energy"
+      ], answerText:"Work done by a force on an object equals the variation of its kinetic energy",
+        why:"W = ΔK." },
+
+      { q:"Quantum numbers:", options:[
+        "Are integer numbers that identify quantised solutions of quantum-mechanics problems",
+        "Are the numbers of possible different levels of information known simultaneously",
+        "Express the uncertainty associated to a quantum measurement"
+      ], answerText:"Are integer numbers that identify quantised solutions of quantum-mechanics problems",
+        why:"They label allowed (quantized) states." },
+
+      { q:"The resistance of a piece of material:", options:[
+        "Is directly proportional to the length along the current direction",
+        "Is directly proportional to its cross section",
+        "Does not depend on the material"
+      ], answerText:"Is directly proportional to the length along the current direction",
+        why:"R = ρ L/A." },
+
+      { q:"The force due to a static magnetic field on a charged particle:", options:[
+        "Does not alter the particle velocity since it does no work",
+        "Is orthogonal to the particle direction of motion",
+        "Can change the particle velocity since it does work on it"
+      ], answerText:"Is orthogonal to the particle direction of motion",
+        why:"F = q v × B is perpendicular to v." },
+
+      { q:"The amplitude of a sine wave is:", options:[
+        "The minimum displacement from equilibrium",
+        "The maximum displacement from equilibrium",
+        "The average displacement from equilibrium"
+      ], answerText:"The maximum displacement from equilibrium",
+        why:"Amplitude = peak displacement." },
+
+      { q:"When a conductor is in electrical equilibrium:", options:[
+        "Electric field is zero everywhere inside the conductor",
+        "Electric field is negative everywhere inside the conductor",
+        "Electric field is positive everywhere inside the conductor"
+      ], answerText:"Electric field is zero everywhere inside the conductor",
+        why:"Charges move until internal E becomes zero." },
+
+      { q:"Increasing the distance (d) between plates of a parallel-plate capacitor makes its capacitance:", options:[
+        "Increase",
+        "Decrease",
+        "Remain constant"
+      ], answerText:"Decrease",
+        why:"C = εA/d." },
+
+      { q:"Among bonds in solids, the strongest ones are:", options:[
+        "Ionic and covalent bonds",
+        "Van der Waals and hydrogen bonds",
+        "Metallic and covalent bonds"
+      ], answerText:"Ionic and covalent bonds",
+        why:"Primary bonds are strongest." },
+
+      { q:"Bremsstrahlung refers to:", options:[
+        "Creation of particle-antiparticle pairs",
+        "Scattering due to magnetic fields",
+        "Emission of electromagnetic radiation by accelerated charged particles"
+      ], answerText:"Emission of electromagnetic radiation by accelerated charged particles",
+        why:"Accelerating charges emit radiation." },
+
+      { q:"In particle detectors, the Fano factor quantifies:", options:[
+        "Signal-to-noise ratio",
+        "Energy resolution of detector",
+        "Departure of observed variance from Poisson-predicted variance"
+      ], answerText:"Departure of observed variance from Poisson-predicted variance",
+        why:"It measures deviation from pure Poisson fluctuations." },
+
+      { q:"Gauss's law states that:", options:[
+        "Electric flux out of a closed surface equals enclosed charge divided by ε0",
+        "Electric flux equals the electric current that flows on the surface",
+        "Electric flux out of a closed surface is always zero"
+      ], answerText:"Electric flux out of a closed surface equals enclosed charge divided by ε0",
+        why:"∮E·dA = Q/ε0." },
+
+      { q:"The photoelectric effect cannot happen on free electrons because:", options:[
+        "It would violate conservation of energy and momentum",
+        "Free electrons do not exist",
+        "It would violate Newton’s laws"
+      ], answerText:"It would violate conservation of energy and momentum",
+        why:"Free electron can’t absorb photon conserving both E and p." },
+
+      { q:"According to Faraday/Lenz law, induced current direction:", options:[
+        "Depends on the sign of charge carriers",
+        "Generates a magnetic field that favors flux variation",
+        "Generates a magnetic field that opposes the variation of magnetic flux"
+      ], answerText:"Generates a magnetic field that opposes the variation of magnetic flux",
+        why:"Lenz’s law: opposes the change." },
+
+      { q:"Kirchhoff's second law is motivated by:", options:[
+        "Conservative electric field / energy conservation (loop rule)",
+        "Can be used only when no generators are present",
+        "Directed sum of potential differences in any nodes is zero"
+      ], answerText:"Conservative electric field / energy conservation (loop rule)",
+        why:"Loop rule comes from energy conservation." },
+
+      // 10 AM set (20)
+      { q:"Average acceleration is defined as:", options:[
+        "Difference between initial and final velocity",
+        "Total distance traveled divided by total time",
+        "Change in velocity divided by the time interval of that change"
+      ], answerText:"Change in velocity divided by the time interval of that change",
+        why:"a_avg = (v_f − v_i)/Δt." },
+
+      { q:"Scintillating detectors:", options:[
+        "Do not require amplification because of very large light yield",
+        "Measure de-excitation energy (light) emitted after scintillator is hit by radiation",
+        "Must be plastic because non-organic ones do not fluoresce"
+      ], answerText:"Measure de-excitation energy (light) emitted after scintillator is hit by radiation",
+        why:"Radiation excites → de-excitation emits light." },
+
+      { q:"In single-slit diffraction, the central bright fringe is characterized by:", options:[
+        "Maximum intensity and constructive interference",
+        "Minimum intensity and destructive interference",
+        "Intermediate intensity and random interference"
+      ], answerText:"Maximum intensity and constructive interference",
+        why:"At the center waves add mostly in-phase." },
+
+      { q:"According to special relativity, time intervals observed by an arbitrary frame:", options:[
+        "Are shorter than in the clock frame",
+        "Are the same as in the clock frame",
+        "Are longer than in the clock frame"
+      ], answerText:"Are longer than in the clock frame",
+        why:"Time dilation: moving clocks tick slower." },
+
+      { q:"In pulse mode particle detectors, the pulse amplitude:", options:[
+        "Carries information on the amount of charge generated in the detector volume",
+        "Does not carry meaningful information",
+        "Carries information only on the time of interaction"
+      ], answerText:"Carries information on the amount of charge generated in the detector volume",
+        why:"More deposited energy → more charge → higher pulse." },
+
+      { q:"The exclusion principle:", options:[
+        "Holds for all elementary particles",
+        "Holds for particles obeying the Fermi-Dirac statistics",
+        "Holds for particles obeying the Bose-Einstein statistics"
+      ], answerText:"Holds for particles obeying the Fermi-Dirac statistics",
+        why:"Pauli exclusion applies to fermions." },
+
+      { q:"The double slit experiment with an electron beam:", options:[
+        "Shows wave-particle duality of electrons",
+        "Shows electrons can oscillate into photons",
+        "Shows a single electron passes both slits simultaneously (as an observed fact)"
+      ], answerText:"Shows wave-particle duality of electrons",
+        why:"Interference + point-like detection." },
+
+      { q:"A classical explanation of the blackbody spectrum failed because:", options:[
+        "Matching experiments required quantisation of energy exchange",
+        "Technology was insufficient to produce a true black body",
+        "Calculations were too complex"
+      ], answerText:"Matching experiments required quantisation of energy exchange",
+        why:"Planck introduced energy quanta." },
+
+      { q:"If distance between two charges is doubled, the electric field:", options:[
+        "Decreases by a factor of 4",
+        "Remains unchanged",
+        "Decreases by a factor of 2"
+      ], answerText:"Decreases by a factor of 4",
+        why:"Inverse-square law." },
+
+      { q:"Total mechanical energy in a conservative field is:", options:[
+        "Difference between kinetic and potential energy",
+        "Temperature of the system",
+        "Sum of kinetic and potential energies"
+      ], answerText:"Sum of kinetic and potential energies",
+        why:"E = K + U." },
+
+      { q:"An electric capacitor once charged:", options:[
+        "Traps negative charges inside its volume",
+        "Cannot be placed in a circuit",
+        "Generates a potential difference opposite to the one that charged it"
+      ], answerText:"Generates a potential difference opposite to the one that charged it",
+        why:"It opposes further charging." },
+
+      { q:"Frequency of a wave is:", options:[
+        "Number of oscillations per unit time",
+        "Per unit velocity",
+        "Per unit distance"
+      ], answerText:"Number of oscillations per unit time",
+        why:"Hz = cycles per second." },
+
+      { q:"Electromagnetic waves:", options:[
+        "Transport information but not energy",
+        "Travel only across conductors",
+        "May propagate in empty space"
+      ], answerText:"May propagate in empty space",
+        why:"EM waves travel in vacuum." },
+
+      { q:"Kirchhoff’s second law states:", options:[
+        "Used only when no generators are present",
+        "Sum of potential differences in any closed loop is zero",
+        "Due to conservative electric field"
+      ], answerText:"Sum of potential differences in any closed loop is zero",
+        why:"Loop rule." },
+
+      { q:"Mean free path is:", options:[
+        "Average distance between atoms",
+        "Distance of first electron from nucleus",
+        "Average distance between two consecutive interactions in matter"
+      ], answerText:"Average distance between two consecutive interactions in matter",
+        why:"Average distance between collisions." }
+    ];
+
+    // ---- 50 MCQ set (from Written MCQs PDF) ----
+    // Some questions originally had 4 options; one wrong option will be removed automatically.
+    const BANK_50 = [
+      { q:"Which law of motion explains why passengers move forward when a car suddenly stops?", options:[
+        "First Law", "Second Law", "Third Law", "None of the above"
+      ], answerText:"First Law", why:"Inertia: body keeps its state of motion unless acted by net force." },
+
+      { q:"What is the SI unit of magnetic field?", options:[
+        "Tesla (T)", "Newton (N)", "Joule (J)", "Coulomb (C)"
+      ], answerText:"Tesla (T)", why:"Magnetic field B is measured in tesla." },
+
+      { q:"The speed of light is approximately:", options:[
+        "3×10^6 m/s", "3×10^5 m/s", "3×10^8 m/s", "3×10^3 m/s"
+      ], answerText:"3×10^8 m/s", why:"c ≈ 3×10^8 m/s in vacuum." },
+
+      { q:"Which law explains bending (refraction) of light when it passes from one medium to another?", options:[
+        "Newton's First Law", "Snell's Law", "Ohm's Law", "Coulomb's Law"
+      ], answerText:"Snell's Law", why:"Refraction follows n1 sinθ1 = n2 sinθ2." },
+
+      { q:"Which material is commonly used as a semiconductor in electronic devices?", options:[
+        "Gold", "Copper", "Silicon", "Iron"
+      ], answerText:"Silicon", why:"Silicon is the standard semiconductor material." },
+
+      { q:"In E = h f, the constant h is:", options:[
+        "Boltzmann constant", "Planck constant", "Reduced Planck constant", "Avogadro constant"
+      ], answerText:"Planck constant", why:"Photon energy E is proportional to frequency with Planck’s constant h." },
+
+      { q:"The Heisenberg Uncertainty Principle applies to which pair?", options:[
+        "Energy and power", "Position and momentum", "Mass and velocity", "Charge and current"
+      ], answerText:"Position and momentum", why:"Δx·Δp ≥ ħ/2." },
+
+      { q:"Magnetic flux is measured in:", options:[
+        "Teslas", "Webers", "Amperes", "Volts"
+      ], answerText:"Webers", why:"Flux Φ has unit weber (Wb)." },
+
+      { q:"The unit of electric current is:", options:[
+        "Coulomb", "Volt", "Ampere", "Watt"
+      ], answerText:"Ampere", why:"Current I is measured in ampere (A)." },
+
+      { q:"The electric field due to a point charge is inversely proportional to:", options:[
+        "Distance", "Distance squared", "Charge", "Charge squared"
+      ], answerText:"Distance squared", why:"E = kQ/r²." },
+
+      { q:"Cherenkov radiation occurs when a particle travels:", options:[
+        "Faster than the speed of light in a vacuum",
+        "Faster than the speed of light in the medium",
+        "At the speed of light in the medium",
+        "Slower than the speed of light in the medium"
+      ], answerText:"Faster than the speed of light in the medium", why:"It happens when v > c/n." },
+
+      { q:"What is the SI unit of force?", options:[
+        "Newton (N)", "Joule (J)", "Watt (W)", "Coulomb (C)"
+      ], answerText:"Newton (N)", why:"Force unit is newton." },
+
+      { q:"Cherenkov emission wavelength mostly:", options:[
+        "Peaks at long wavelengths", "Peaks at short wavelengths", "Peaks at mid wavelengths", "Does not have a peak"
+      ], answerText:"Peaks at short wavelengths", why:"Intensity increases toward shorter wavelengths (blue/UV)." },
+
+      { q:"Quantum numbers are used to describe:", options:[
+        "The position of planets",
+        "Values of conserved quantities in quantum systems",
+        "The speed of light",
+        "The force between charges"
+      ], answerText:"Values of conserved quantities in quantum systems", why:"They label allowed quantum states." },
+
+      { q:"Resistance of a material is proportional to its length:", options:[
+        "Inversely proportional", "Directly proportional", "Independent of length", "Random"
+      ], answerText:"Directly proportional", why:"R = ρL/A." },
+
+      { q:"Electric potential is:", options:[
+        "Kinetic energy per unit charge",
+        "Electric potential energy per unit charge",
+        "Current per unit charge",
+        "Resistance per unit charge"
+      ], answerText:"Electric potential energy per unit charge", why:"V = U/q." },
+
+      { q:"For reflection on an ideal mirror, the angle of incidence is:", options:[
+        "Always 0°", "Equal to the angle of reflection", "Half the angle of reflection", "Twice the angle of reflection"
+      ], answerText:"Equal to the angle of reflection", why:"Law of reflection: θi = θr." },
+
+      { q:"Average current in a wire (definition) is:", options:[
+        "Power passing through the wire",
+        "Voltage passing through the wire",
+        "Total charge crossing a section per unit time",
+        "Resistance of the wire"
+      ], answerText:"Total charge crossing a section per unit time", why:"I = ΔQ/Δt." },
+
+      { q:"Magnetic force direction on a moving charge near a current-carrying wire is:", options:[
+        "Parallel to the current",
+        "Perpendicular to both the current and the magnetic field",
+        "Antiparallel to the current",
+        "Parallel to the magnetic field"
+      ], answerText:"Perpendicular to both the current and the magnetic field", why:"Lorentz force: F = q v × B." },
+
+      { q:"Newton's First Law states:", options:[
+        "F = ma",
+        "For every action, there is an equal and opposite reaction",
+        "An object stays at rest or uniform motion unless acted upon by net external force",
+        "Acceleration is directly proportional to net force"
+      ], answerText:"An object stays at rest or uniform motion unless acted upon by net external force", why:"That’s the inertia law." },
+
+      { q:"Newton's Third Law states:", options:[
+        "F = ma",
+        "For every action, there is an equal and opposite reaction",
+        "An object stays at rest unless acted upon",
+        "Acceleration is proportional to mass"
+      ], answerText:"For every action, there is an equal and opposite reaction", why:"Forces come in equal and opposite pairs." },
+
+      { q:"Electric field E is defined as:", options:[
+        "Force on a test charge divided by the test charge (F/q)",
+        "Test charge divided by force (q/F)",
+        "Force multiplied by charge (F·q)",
+        "Force divided by distance (F/r)"
+      ], answerText:"Force on a test charge divided by the test charge (F/q)", why:"E = F/q." },
+
+      { q:"Magnetic flux is:", options:[
+        "Number of magnetic field lines through a given area",
+        "Force experienced by a charge in a magnetic field",
+        "Potential energy in a magnetic field",
+        "Resistance to a magnetic field"
+      ], answerText:"Number of magnetic field lines through a given area", why:"Φ = ∫B·dA (conceptually field through area)." },
+
+      { q:"Magnetic field lines indicate direction of:", options:[
+        "Electric current", "Magnetic force", "Magnetic potential", "Magnetic field"
+      ], answerText:"Magnetic field", why:"Lines are drawn tangent to B direction." },
+
+      { q:"Electrical current can be derived by:", options:[
+        "Measuring power dissipated",
+        "Counting number of electrons only",
+        "Dividing total charge by time",
+        "Calculating resistance"
+      ], answerText:"Dividing total charge by time", why:"I = Q/t." },
+
+      { q:"Pair production is:", options:[
+        "Creation of particle–antiparticle pair from a high-energy photon",
+        "Splitting of an atom",
+        "Fusion of two particles",
+        "Decay of a radioactive nucleus"
+      ], answerText:"Creation of particle–antiparticle pair from a high-energy photon", why:"γ → e⁻ + e⁺ (near nucleus)." },
+
+      { q:"In special relativity, the speed of light:", options:[
+        "Depends on the frame of reference",
+        "Does not depend on the frame of reference",
+        "Varies with observer speed",
+        "Can be exceeded by certain particles"
+      ], answerText:"Does not depend on the frame of reference", why:"c is invariant for inertial observers." },
+
+      { q:"Uncertainty principle (best statement):", options:[
+        "More precise position → less precise momentum",
+        "More precise energy → less precise mass",
+        "More precise velocity → less precise mass",
+        "More precise charge → less precise spin"
+      ], answerText:"More precise position → less precise momentum", why:"ΔxΔp ≥ ħ/2." },
+
+      { q:"Energy bands of a semiconductor:", options:[
+        "There are no energy bands",
+        "Only one energy band",
+        "Multiple bands with a forbidden gap between them",
+        "Bands overlap completely"
+      ], answerText:"Multiple bands with a forbidden gap between them", why:"Semiconductors have a band gap." },
+
+      { q:"Bethe–Bloch formula describes:", options:[
+        "Magnetic force on a charged particle",
+        "Energy loss of charged particles traveling through matter",
+        "Electric potential around a charge",
+        "Quantum states of electrons"
+      ], answerText:"Energy loss of charged particles traveling through matter", why:"Stopping power / dE/dx in matter." },
+
+      { q:"Gas detectors work by:", options:[
+        "Measuring heat from particles",
+        "Ionizing gas and measuring the resulting current",
+        "Detecting sound waves",
+        "Measuring displacement of particles"
+      ], answerText:"Ionizing gas and measuring the resulting current", why:"Radiation creates ion pairs in gas → signal." },
+
+      { q:"Force on charge q moving with velocity v in magnetic field B is:", options:[
+        "F = q v · B",
+        "F = q (v × B)",
+        "F = q v + B",
+        "F = q (v · B)"
+      ], answerText:"F = q (v × B)", why:"Lorentz magnetic force is cross product." },
+
+      { q:"Gauss’s law for electric fields is:", options:[
+        "∇·E = 0",
+        "∇×E = −∂B/∂t",
+        "∇·E = ρ/ε0",
+        "∇×E = ρ/ε0"
+      ], answerText:"∇·E = ρ/ε0", why:"Differential form of Gauss’s law." },
+
+      { q:"Energy stored in a capacitor (capacitance C, voltage V) is:", options:[
+        "E = 1/2 C V²",
+        "E = C V",
+        "E = 1/2 C V",
+        "E = C² V"
+      ], answerText:"E = 1/2 C V²", why:"Capacitor energy U = ½CV²." },
+
+      { q:"Faraday’s law of electromagnetic induction is:", options:[
+        "∇·B = 0",
+        "∇×E = −∂B/∂t",
+        "∇×E = ∂B/∂t",
+        "∇·E = ∂B/∂t"
+      ], answerText:"∇×E = −∂B/∂t", why:"Maxwell–Faraday equation." },
+
+      { q:"Magnetic permeability of free space μ0 is:", options:[
+        "8.85×10⁻¹² H/m",
+        "1.26×10⁻⁶ H/m",
+        "9.11×10⁻³¹ H/m",
+        "6.63×10⁻³⁴ H/m"
+      ], answerText:"1.26×10⁻⁶ H/m", why:"μ0 = 4π×10⁻⁷ H/m ≈ 1.26×10⁻⁶ H/m." },
+
+      { q:"Equation of a harmonic wave moving in +x direction is:", options:[
+        "y(x,t)=A sin(kx−ωt)",
+        "y(x,t)=A cos(kx+ωt)",
+        "y(x,t)=A sin(kx+ωt)",
+        "y(x,t)=A cos(kx−ωt)"
+      ], answerText:"y(x,t)=A sin(kx−ωt)", why:"Standard traveling wave form (phase kx−ωt)." },
+
+      { q:"Relationship between wave speed v, frequency f and wavelength λ:", options:[
+        "v = fλ", "v = f/λ", "v = λ/f", "v = f²λ"
+      ], answerText:"v = fλ", why:"Basic wave relation." },
+
+      { q:"Principle of superposition:", options:[
+        "Total displacement = sum of individual displacements",
+        "Waves do not interact",
+        "Waves are always constructive",
+        "Combined amplitude = product of amplitudes"
+      ], answerText:"Total displacement = sum of individual displacements", why:"Superposition = add effects." },
+
+      { q:"de Broglie wavelength of a particle is:", options:[
+        "λ = h/(mv)", "λ = hmv", "λ = mv/h", "λ = hv/m"
+      ], answerText:"λ = h/(mv)", why:"Matter-wave relation." },
+
+      { q:"Decay when a neutron turns into a proton is:", options:[
+        "Alpha decay", "Beta decay", "Gamma decay", "Neutron decay"
+      ], answerText:"Beta decay", why:"n → p + e⁻ + ν̄ (beta minus)." },
+
+      { q:"Binding energy of a nucleus is:", options:[
+        "Energy required to bind electrons to nucleus",
+        "Energy released when nucleus is formed",
+        "Energy required to remove an electron from nucleus",
+        "Energy required to break nucleus into protons and neutrons"
+      ], answerText:"Energy required to break nucleus into protons and neutrons", why:"Binding energy equals separation energy." },
+
+      { q:"Three types of radiation in radioactive decay:", options:[
+        "Alpha, Beta, Gamma", "Delta, Gamma, Sigma", "Beta, Gamma, Epsilon", "Alpha, Delta, Theta"
+      ], answerText:"Alpha, Beta, Gamma", why:"Standard nuclear radiations." },
+
+      { q:"Photoelectric effect is:", options:[
+        "Emission of electrons from a metal when light shines on it",
+        "Absorption of photons by electrons in an atom",
+        "Scattering of light by electrons",
+        "Emission of light by heated objects"
+      ], answerText:"Emission of electrons from a metal when light shines on it", why:"Photon ejects electrons if hf > φ." },
+
+      { q:"Compton scattering is:", options:[
+        "Scattering of photons by free electrons",
+        "Emission of photons by atoms",
+        "Absorption of photons by electrons",
+        "Diffraction of photons by crystals"
+      ], answerText:"Scattering of photons by free electrons", why:"Photon loses energy, wavelength increases." },
+
+      { q:"Which detector uses ionization of gas to detect radiation?", options:[
+        "Geiger–Müller tube", "Scintillation detector", "Solid-state detector", "Photographic plate"
+      ], answerText:"Geiger–Müller tube", why:"Gas ionization detector." },
+
+      { q:"Principle behind scintillation detectors:", options:[
+        "Detection of light emitted by excited atoms",
+        "Measurement of heat produced by radiation",
+        "Counting ionized gas molecules",
+        "Observing color changes in chemicals"
+      ], answerText:"Detection of light emitted by excited atoms", why:"Scintillator emits light when excited." },
+
+      { q:"Bremsstrahlung radiation is:", options:[
+        "Radiation emitted when a charged particle is accelerated",
+        "Radiation from nuclear decay",
+        "Emission of particles from a radioactive source",
+        "Absorption of radiation by a material"
+      ], answerText:"Radiation emitted when a charged particle is accelerated", why:"Braking radiation from acceleration/deceleration." },
+
+      { q:"Solid-state detectors work by:", options:[
+        "Ionization of gas",
+        "Ionization of a semiconductor material",
+        "Scattering of light",
+        "Reflection of electrons"
+      ], answerText:"Ionization of a semiconductor material", why:"Creates electron–hole pairs in semiconductor." },
+
+      { q:"Bethe–Bloch formula describes:", options:[
+        "Energy loss of charged particles traveling through matter",
+        "Wavelength of scattered photons",
+        "Frequency of emitted light from atoms",
+        "Mass of particles"
+      ], answerText:"Energy loss of charged particles traveling through matter", why:"Stopping power dE/dx." }
+    ];
+
+    // ---- 15 unique MCQ set (with answers + explanations) ----
+    const BANK_15 = [
+      { q:"Coulomb force depends on:", options:["q1 + q2 and r","q1·q2 and 1/r²","q1/q2 and r²"], answerText:"q1·q2 and 1/r²", why:"F = k q1 q2 / r²." },
+      { q:"Electric field inside a conductor at equilibrium is:", options:["Constant","Zero","Infinite"], answerText:"Zero", why:"Charges rearrange until E=0 inside." },
+      { q:"Gauss law relates electric flux to:", options:["Potential","Enclosed charge","Magnetic field"], answerText:"Enclosed charge", why:"∮E·dA = Qin/ε0." },
+      { q:"Field outside a uniformly charged sphere behaves as:", options:["1/r","1/r²","constant"], answerText:"1/r²", why:"Outside it acts like a point charge." },
+      { q:"Electric potential is:", options:["Vector","Scalar","Force"], answerText:"Scalar", why:"Potential is energy per unit charge (scalar)." },
+      { q:"Capacitance of parallel plates increases when:", options:["d increases","A increases","ε decreases"], answerText:"A increases", why:"C = εA/d." },
+      { q:"Ohm law states:", options:["V = IR","V = I/R","I = VR"], answerText:"V = IR", why:"Voltage proportional to current." },
+      { q:"Magnetic force on moving charge is:", options:["parallel to v","perpendicular to v","zero always"], answerText:"perpendicular to v", why:"Lorentz force q v×B is perpendicular." },
+      { q:"Time dilation means moving clock runs:", options:["faster","slower","same"], answerText:"slower", why:"Moving clocks tick slower." },
+      { q:"Photoelectric effect proves:", options:["Wave only","Particle nature of light","Gravity effect"], answerText:"Particle nature of light", why:"Energy is quantized in photons." },
+      { q:"Resistors in series:", options:["add directly","add reciprocally","subtract"], answerText:"add directly", why:"R_total = R1 + R2." },
+      { q:"Resistors in parallel:", options:["add directly","add reciprocally","largest dominates"], answerText:"add reciprocally", why:"1/R_total = Σ(1/R)." },
+      { q:"Dipole far field varies as:", options:["1/r²","1/r³","constant"], answerText:"1/r³", why:"Dipole field ~ 1/r³." },
+      { q:"Infinite plane field is:", options:["uniform","1/r²","zero"], answerText:"uniform", why:"Independent of distance." },
+      { q:"Mean free path is:", options:["atomic spacing","average collision distance","orbit radius"], answerText:"average collision distance", why:"Average distance between interactions." }
+    ];
+
+    // Combine to 105
+    const BANK = [...BANK_40, ...BANK_50, ...BANK_15];
+
+    // ======= Utilities =======
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+    function formatTime(sec){
+      const m = Math.floor(sec/60);
+      const s = sec%60;
+      return String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+    }
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    // Reduce any 4-option question to 3 options (a/b/c) by removing one WRONG option.
+    function reduceToThree(options, answerText){
+      if(options.length <= 3) return { options, answerText };
+      // Remove one wrong option (prefer the last wrong one)
+      let idxToRemove = -1;
+      for(let i=options.length-1;i>=0;i--){
+        if(options[i] !== answerText){ idxToRemove = i; break; }
+      }
+      if(idxToRemove === -1){
+        // In the rare case all options equal (shouldn't happen), just remove last.
+        idxToRemove = options.length-1;
+      }
+      const newOptions = options.filter((_,i)=>i!==idxToRemove);
+
+      // Ensure answer still exists; if not, remove another instead (fallback)
+      if(!newOptions.includes(answerText)){
+        // put it back and remove a different one
+        const restored = options.slice();
+        // remove first wrong
+        idxToRemove = restored.findIndex(o => o !== answerText);
+        const fixed = restored.filter((_,i)=>i!==idxToRemove);
+        return { options: fixed.slice(0,3), answerText };
+      }
+      // If still >3 (e.g., 5 options), keep removing wrong ones
+      let final = newOptions.slice();
+      while(final.length > 3){
+        const r = final.findIndex(o => o !== answerText);
+        final.splice(r,1);
+      }
+      return { options: final, answerText };
+    }
+
+    // ======= App State =======
+    let exam = [];                 // built with shuffled Q + shuffled options (and reduced to 3)
+    let answers = [];              // selected option index
+    let current = 0;
+    let timerSec = 105*60;
+    let timerId = null;
+
+    const TOTAL = BANK.length;                 // 105
+    const PASS_MARK = Math.ceil(0.60 * TOTAL); // 63
+
+    document.getElementById("totalCount").textContent = TOTAL;
+    document.getElementById("totalCount2").textContent = TOTAL;
+    document.getElementById("progressTotal").textContent = TOTAL;
+    document.getElementById("qTotal").textContent = TOTAL;
+    document.getElementById("passCount").textContent = PASS_MARK;
+    document.getElementById("passCount2").textContent = PASS_MARK;
+
+    // ======= Build Exam (shuffle Q + options) =======
+    function buildExam(){
+      const shuffledQ = shuffle(BANK);
+      exam = shuffledQ.map((item) => {
+        // reduce to 3 options if needed
+        const reduced = reduceToThree(item.options.slice(), item.answerText);
+
+        // now shuffle options while keeping correct
+        const opts = reduced.options.map((t)=>({text:t, isCorrect: t===reduced.answerText}));
+        const shuffledOpts = shuffle(opts);
+        const correctIndex = shuffledOpts.findIndex(o=>o.isCorrect);
+
+        return {
+          q: item.q,
+          options: shuffledOpts.map(o=>o.text), // always length 3 now
+          correctIndex,
+          why: item.why || "—"
+        };
+      });
+
+      answers = new Array(TOTAL).fill(null);
+      current = 0;
+      timerSec = 105*60;
+      if(timerId){ clearInterval(timerId); timerId=null; }
+      document.getElementById("timer").textContent = formatTime(timerSec);
+      document.getElementById("progress").textContent = "0";
+      document.getElementById("timerPill").classList.remove("danger");
+      renderGrid();
+    }
+
+    // ======= Render =======
+    function showScreen(id){
+      for(const el of document.querySelectorAll(".screen")) el.classList.remove("active");
+      document.getElementById(id).classList.add("active");
+    }
+
+    function renderQuestion(){
+      const q = exam[current];
+      document.getElementById("qIndex").textContent = (current+1);
+      document.getElementById("qNum").textContent = "Q" + (current+1) + ".";
+      document.getElementById("qText").textContent = q.q;
+
+      const box = document.getElementById("options");
+      box.innerHTML = "";
+
+      q.options.forEach((optText, idx)=>{
+        const letter = ["a","b","c"][idx];
+        const id = `q${current}_o${idx}`;
+        const opt = document.createElement("label");
+        opt.className = "opt";
+        opt.setAttribute("for", id);
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "opt";
+        input.id = id;
+        input.checked = answers[current] === idx;
+
+        input.addEventListener("change", ()=>{
+          answers[current] = idx;
+          updateProgress();
+          renderGrid();
+        });
+
+        const span = document.createElement("div");
+        span.className = "label";
+        span.innerHTML = `<b style="color:var(--accent)">${letter})</b> ${escapeHtml(optText)}`;
+
+        opt.appendChild(input);
+        opt.appendChild(span);
+
+        opt.addEventListener("click", (e)=>{
+          if(e.target.tagName !== "INPUT"){
+            input.checked = true;
+            input.dispatchEvent(new Event("change"));
+          }
+        });
+
+        box.appendChild(opt);
+      });
+
+      document.getElementById("prevBtn").disabled = current === 0;
+      document.getElementById("nextBtn").disabled = current === exam.length-1;
+
+      renderGrid();
+    }
+
+    function renderGrid(){
+      const grid = document.getElementById("qGrid");
+      grid.innerHTML = "";
+      for(let i=0;i<exam.length;i++){
+        const b = document.createElement("button");
+        b.className = "qbtn";
+        if(i===current) b.classList.add("current");
+        if(answers[i] !== null) b.classList.add("answered");
+        b.textContent = (i+1);
+        b.addEventListener("click", ()=>{
+          current = i;
+          renderQuestion();
+        });
+        grid.appendChild(b);
+      }
+    }
+
+    function updateProgress(){
+      const answered = answers.filter(v=>v!==null).length;
+      document.getElementById("progress").textContent = String(answered);
+    }
+
+    // ======= Timer =======
+    function startTimer(){
+      timerId = setInterval(()=>{
+        timerSec--;
+        if(timerSec < 0){
+          timerSec = 0;
+          clearInterval(timerId);
+          timerId = null;
+          submitExam(true);
+          return;
+        }
+        document.getElementById("timer").textContent = formatTime(timerSec);
+        if(timerSec <= 10*60){
+          document.getElementById("timerPill").classList.add("danger");
+        }
+      }, 1000);
+    }
+
+    // ======= Actions =======
+    function clearCurrent(){
+      answers[current] = null;
+      updateProgress();
+      renderQuestion();
+    }
+
+    function submitExam(auto=false){
+      if(timerId){ clearInterval(timerId); timerId=null; }
+
+      let correct = 0;
+      const details = [];
+      for(let i=0;i<exam.length;i++){
+        const q = exam[i];
+        const user = answers[i];
+        const isCorrect = (user !== null && user === q.correctIndex);
+        if(isCorrect) correct++;
+        details.push({i, q, user, isCorrect});
+      }
+
+      const total = exam.length;
+      const percent = Math.round((correct/total)*100);
+      const pass = correct >= PASS_MARK;
+
+      const badges = document.getElementById("resultBadges");
+      badges.innerHTML = "";
+      const b1 = document.createElement("div"); b1.className="badge"; b1.textContent = `Correct: ${correct}/${total}`;
+      const b2 = document.createElement("div"); b2.className="badge"; b2.textContent = `Score: ${percent}%`;
+      const b3 = document.createElement("div"); b3.className="badge " + (pass ? "ok":"fail"); b3.textContent = pass ? "PASS ✅" : "FAIL ❌";
+      const b4 = document.createElement("div"); b4.className="badge"; b4.textContent = `Pass mark: 60% (${PASS_MARK}/${total})`;
+      badges.append(b1,b2,b3,b4);
+
+      const sum = document.getElementById("resultSummary");
+      sum.textContent = auto
+        ? "Time is up — the exam was auto-submitted."
+        : "Submitted successfully.";
+
+      // Review
+      const review = document.getElementById("review");
+      review.innerHTML = "";
+      for(const d of details){
+        const det = document.createElement("details");
+        const sumry = document.createElement("summary");
+        const status = d.isCorrect ? "✅" : (d.user===null ? "⚪" : "❌");
+        sumry.textContent = `${status} Q${d.i+1}: ${d.q.q}`;
+        det.appendChild(sumry);
+
+        const div = document.createElement("div");
+        div.className = "revq";
+
+        const userText = (d.user===null) ? "Not answered" : d.q.options[d.user];
+        const correctText = d.q.options[d.q.correctIndex];
+
+        div.innerHTML =
+          `<div><b>Your answer:</b> ${escapeHtml(userText)}</div>
+           <div><b>Correct answer:</b> ${escapeHtml(correctText)}</div>
+           <div style="margin-top:6px"><b>Why:</b> ${escapeHtml(d.q.why)}</div>`;
+        det.appendChild(div);
+
+        review.appendChild(det);
+      }
+
+      showScreen("resultScreen");
+    }
+
+    // ======= Wire up UI =======
+    document.getElementById("shuffleBtn").addEventListener("click", ()=>{
+      buildExam();
+      alert("Shuffled! Now press Start Exam.");
+    });
+
+    document.getElementById("startBtn").addEventListener("click", ()=>{
+      showScreen("examScreen");
+      renderQuestion();
+      updateProgress();
+      startTimer();
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", ()=>{
+      if(current>0){ current--; renderQuestion(); }
+    });
+    document.getElementById("nextBtn").addEventListener("click", ()=>{
+      if(current<exam.length-1){ current++; renderQuestion(); }
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", clearCurrent);
+
+    document.getElementById("submitBtn").addEventListener("click", ()=>{
+      const answered = answers.filter(v=>v!==null).length;
+      const ok = confirm(`Submit now?\nAnswered: ${answered}/${TOTAL}\nUnanswered: ${TOTAL-answered}`);
+      if(ok) submitExam(false);
+    });
+
+    document.getElementById("retryBtn").addEventListener("click", ()=>{
+      buildExam();
+      showScreen("startScreen");
+    });
+
+    document.getElementById("scrollReviewBtn").addEventListener("click", ()=>{
+      document.getElementById("review").scrollIntoView({behavior:"smooth"});
+    });
+
+    // Init
+    buildExam();
+  </script>
+</body>
+</html>
